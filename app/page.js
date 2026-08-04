@@ -1,66 +1,60 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { FaSquareFull } from "react-icons/fa";
+
+import SplineHero from "@/components/SplineHero";
+import LiveClock from "@/components/LiveClock";
+import { site, absoluteUrl } from "@/lib/site";
+
+export const metadata = {
+  // The layout's default title already reads "Soren — Artistry and
+  // Engineering", so the home page opts out of the "%s — Soren" template.
+  title: { absolute: `${site.name} — ${site.tagline}` },
+  description: site.description,
+  alternates: { canonical: "/" },
+};
+
+// Tells Google this is a person's portfolio rather than a company site, and
+// wires the social profiles to the name.
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.author.name,
+  url: absoluteUrl("/"),
+  description: site.description,
+  email: `mailto:${site.author.email}`,
+  sameAs: [
+    site.author.github,
+    `https://twitter.com/${site.author.twitter.replace("@", "")}`,
+  ],
+};
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
+
+      <SplineHero scene={site.splineScene} />
+
+      <div className="hero-header">
+        {/* One <h1> across both lines — the original template used two, which
+            gives the page two competing top-level headings. */}
+        <h1>
+          {site.heroLines.map((line, i) => (
+            <span key={line}>
+              {i > 0 && <br />}
+              {line}
+            </span>
+          ))}
+        </h1>
+      </div>
+
+      <div className="home-logo">
+        <FaSquareFull size="16px" style={{ color: "#fff" }} aria-hidden="true" />
+      </div>
+
+      <LiveClock />
+    </>
   );
 }

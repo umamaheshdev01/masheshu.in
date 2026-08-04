@@ -1,0 +1,154 @@
+[
+  {
+    "image": "/work/work-18.jpg",
+    "alt": "Long exposure of a city street at night",
+    "height": 300,
+    "name": "Interactive Hero",
+    "date": "April 2024",
+    "type": "blog",
+    "slug": "building-an-interactive-hero-with-spline"
+  },
+  {
+    "image": "/work/work-10.jpg",
+    "alt": "Concrete facade in flat morning light",
+    "height": 200,
+    "name": "Studio",
+    "date": "April 2024",
+    "type": "img"
+  },
+  {
+    "image": "/work/work-7.jpg",
+    "alt": "Detail of a dark interior",
+    "height": 250,
+    "name": "Designing in the Dark",
+    "date": "March 2024",
+    "type": "article",
+    "slug": "designing-in-the-dark"
+  },
+  {
+    "image": "/work/work-20.jpg",
+    "alt": "Reflection in a glass building",
+    "height": 200,
+    "name": "Field Notes",
+    "date": "April 2024",
+    "type": "img"
+  },
+  {
+    "image": "/work/work-5.jpg",
+    "alt": "Empty stairwell",
+    "height": 350,
+    "name": "On Motion",
+    "date": "February 2024",
+    "type": "article",
+    "slug": "designing-in-the-dark"
+  },
+  {
+    "image": "/work/work-22.jpg",
+    "alt": "Silhouette against a bright window",
+    "height": 350,
+    "name": "Contact Sheet",
+    "date": "April 2024",
+    "type": "img"
+  },
+  {
+    "image": "/work/work-3.jpg",
+    "alt": "Overhead view of a desk",
+    "height": 500,
+    "name": "Twenty Two Frames",
+    "date": "January 2024",
+    "type": "blog",
+    "slug": "twenty-two-frames"
+  },
+  {
+    "image": "/work/work-9.jpg",
+    "alt": "Textured wall in shadow",
+    "height": 300,
+    "name": "Surfaces",
+    "date": "April 2024",
+    "type": "img"
+  },
+  {
+    "image": "/work/work-16.jpg",
+    "alt": "Doorway at the end of a corridor",
+    "height": 400,
+    "name": "Interactive Hero",
+    "date": "April 2024",
+    "type": "blog",
+    "slug": "building-an-interactive-hero-with-spline"
+  },
+  {
+    "image": "/work/work-4.jpg",
+    "alt": "Rooftop at dusk",
+    "height": 350,
+    "name": "Twenty Two Frames",
+    "date": "January 2024",
+    "type": "blog",
+    "slug": "twenty-two-frames"
+  },
+  {
+    "image": "/work/work-11.jpg",
+    "alt": "Stack of prints on a table",
+    "height": 200,
+    "name": "Archive",
+    "date": "April 2024",
+    "type": "img"
+  },
+  {
+    "image": "/work/work-17.jpg",
+    "alt": "Handrail catching the light",
+    "height": 200,
+    "name": "Details",
+    "date": "April 2024",
+    "type": "img"
+  },
+  {
+    "image": "/work/work-21.jpg",
+    "alt": "Fog over a low skyline",
+    "height": 250,
+    "name": "Weather",
+    "date": "April 2024",
+    "type": "img"
+  },
+  {
+    "image": "/work/work-12.jpg",
+    "alt": "Interior of an empty gallery",
+    "height": 450,
+    "name": "Designing in the Dark",
+    "date": "March 2024",
+    "type": "article",
+    "slug": "designing-in-the-dark"
+  },
+  {
+    "image": "/work/work-19.jpg",
+    "alt": "Neon sign reflected in a puddle",
+    "height": 450,
+    "name": "After Hours",
+    "date": "April 2024",
+    "type": "img"
+  },
+  {
+    "image": "/work/work-6.jpg",
+    "alt": "Curved concrete ramp",
+    "height": 450,
+    "name": "Twenty Two Frames",
+    "date": "January 2024",
+    "type": "blog",
+    "slug": "twenty-two-frames"
+  },
+  {
+    "image": "/work/work-13.jpg",
+    "alt": "Window frame casting shadows",
+    "height": 200,
+    "name": "Light Study",
+    "date": "April 2024",
+    "type": "img"
+  },
+  {
+    "image": "/work/work-14.jpg",
+    "alt": "Bare tree against a pale sky",
+    "height": 300,
+    "name": "Outside",
+    "date": "April 2024",
+    "type": "img"
+  }
+]

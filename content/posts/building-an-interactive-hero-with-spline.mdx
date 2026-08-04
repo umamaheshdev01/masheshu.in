@@ -1,0 +1,61 @@
+---
+title: "Building an Interactive Hero with Spline"
+date: "2024-04-18"
+excerpt: "Why the home page opens with a field of drifting particles instead of a static image, and what it costs."
+cover: "/work/work-18.jpg"
+coverAlt: "Long exposure of a city street at night"
+tags: ["3d", "react", "motion"]
+type: "blog"
+---
+
+I wanted the first thing you see to respond to you. Not a video loop, not a
+hero image with a parallax nudge — something that actually tracks the cursor
+and reacts. So the home page opens on a Spline scene: a few thousand white
+points drifting in dark space, pushed around by the pointer.
+
+## Why not roll my own
+
+The obvious alternative was a canvas particle system. Two hundred lines of
+`requestAnimationFrame`, some cheap physics, done in an afternoon. I've
+written that code before and I've also maintained it before, which is the
+part people forget. Every time you want to change the falloff curve or the
+density you're back in the math.
+
+<Figure
+  src="/work/work-2.jpg"
+  alt="Studio desk with the scene open on a monitor"
+  caption="Iterating on the falloff in the Spline editor."
+  size="wide"
+/>
+
+With Spline the scene is a file I open in a visual editor. I drag the density
+slider, I watch it change, I hit publish. The React side never changes:
+
+```jsx
+<Spline scene="https://prod.spline.design/BNaurVSeS57NeyWI/scene.splinecode" />
+```
+
+That's the whole integration. One component, one URL.
+
+## What it costs
+
+Honesty first: the runtime is not small, and it's WebGL, so it's doing real
+work on the GPU while it's on screen. Three things make that acceptable here.
+
+The scene only exists on the home page. Navigate to Work or Photos and it
+unmounts. It loads after the rest of the page, so the headline and the
+navigation are readable and interactive before a single particle appears.
+And the headline is real text in the HTML, not baked into the scene — which
+means it's in the page source, it's selectable, and search engines can read
+it.
+
+That last point is the one I'd argue hardest for. It is very easy to build a
+beautiful hero that is, as far as a crawler is concerned, an empty box.
+
+## Falling back
+
+On a device that can't do WebGL, or a connection that gives up on the
+runtime, you get a dark background and the headline. Which is a legible home
+page. Every decorative layer in this site is built to be subtractable — if
+it fails, what's left should still be the site rather than a broken version
+of it.
