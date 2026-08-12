@@ -369,21 +369,49 @@ button {
   color: var(--dark-text-tertiary);
 }
 
-.post-content p {
-  margin-bottom: 0.75em;
+/* Body copy is set for reading, not for UI. The global `p` rule is 14px/20px,
+   which is right for dock labels and grid cards and much too tight for a
+   paragraph you actually read top to bottom. */
+.post-content p,
+.post-content li {
+  font-size: 16.5px;
+  line-height: 1.7;
+  letter-spacing: 0.003em;
 }
 
+.post-content p {
+  margin-bottom: 1.15em;
+}
+
+/* Headings need to outrank body copy at a glance. The step is deliberately
+   small — a portfolio post is short enough that size plus space does the
+   work, without turning into a documentation page. */
 .post-content h2,
 .post-content h3 {
   color: var(--dark-text-color);
-  font-size: 14px;
   font-weight: 600;
-  line-height: 20px;
-  margin: 2em 0 0.75em;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.post-content h2 {
+  font-size: 21px;
+  line-height: 1.35;
+  /* Far more space above than below, so a heading reads as attached to the
+     paragraph it introduces rather than floating between two. */
+  margin: 2.75em 0 0.6em;
 }
 
 .post-content h3 {
   color: var(--dark-text-secondary);
+  font-size: 17px;
+  line-height: 1.4;
+  margin: 2em 0 0.5em;
+}
+
+/* No leading gap when a post opens on a heading. */
+.post-content > :is(h2, h3):first-child {
+  margin-top: 0;
 }
 
 .post-content a {
@@ -408,10 +436,8 @@ button {
 
 .post-content li {
   color: var(--dark-text-color);
-  font-size: 14px;
   font-weight: 500;
-  line-height: 20px;
-  margin-bottom: 0.25em;
+  margin-bottom: 0.4em;
 }
 
 .post-content blockquote {
@@ -433,7 +459,9 @@ button {
 
 .post-content code {
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 12.5px;
+  /* Monospace runs visually larger than the body face at the same size, so
+     this sits a little under it rather than matching. */
+  font-size: 14.5px;
   background-color: var(--dark-card-bg);
   border: 1px solid var(--dark-card-border);
   border-radius: 4px;
@@ -569,6 +597,14 @@ button {
   .container,
   .container.page-post {
     width: 100%;
+  }
+
+  /* Full width means the 0.5em from .container is all that stands between
+     body copy and the screen edge. Reading a post needs a real gutter, and
+     one that respects notches in landscape. */
+  .container.page-post {
+    padding-inline: max(1.25rem, env(safe-area-inset-left));
+    margin-block: 3.5em;
   }
 
   .dock-item {

@@ -1,23 +1,24 @@
 import WorkGrid from "@/components/WorkGrid";
-import work from "@/content/work.json";
+import { getAllPosts } from "@/lib/posts";
 
 export const metadata = {
   title: "Work",
   description:
-    "Selected work, writing and photography by Soren — interactive web design and creative engineering.",
+    "Selected work and writing by Uma Mahesh — coding and creative engineering.",
   alternates: { canonical: "/work" },
   openGraph: {
     title: "Work",
-    description: "Selected work, writing and photography by Soren.",
+    description: "Selected work and writing by Uma Mahesh.",
     url: "/work",
   },
 };
 
-export default function WorkPage() {
+export default async function WorkPage() {
+  const posts = await getAllPosts();
   return (
     <>
       <h1 className="sr-only">Work</h1>
-      <WorkGrid items={work} />
+      <WorkGrid items={posts} />
     </>
   );
 }

@@ -1,8 +1,9 @@
-import { getAllPosts } from "@/lib/posts";
+import { getAllEntries } from "@/lib/posts";
 import { absoluteUrl } from "@/lib/site";
 
-export default function sitemap() {
-  const posts = getAllPosts();
+export default async function sitemap() {
+  // Posts and projects both have detail pages, so both belong in here.
+  const posts = await getAllEntries();
   const latest = posts[0] ? new Date(posts[0].date) : new Date();
 
   const staticPages = [

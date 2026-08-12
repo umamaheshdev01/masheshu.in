@@ -5,26 +5,22 @@ import LiveClock from "@/components/LiveClock";
 import { site, absoluteUrl } from "@/lib/site";
 
 export const metadata = {
-  // The layout's default title already reads "Soren — Artistry and
-  // Engineering", so the home page opts out of the "%s — Soren" template.
+  // The layout's default title already reads "Uma Mahesh — Coding and
+  // Engineering", so the home page opts out of the "%s — Uma Mahesh" template.
   title: { absolute: `${site.name} — ${site.tagline}` },
   description: site.description,
   alternates: { canonical: "/" },
 };
 
-// Tells Google this is a person's portfolio rather than a company site, and
-// wires the social profiles to the name.
+// Tells Google this is a person's portfolio rather than a company site.
+// No `sameAs` or `email` while the social links are off — an empty array
+// would be worse than omitting the field.
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: site.author.name,
   url: absoluteUrl("/"),
   description: site.description,
-  email: `mailto:${site.author.email}`,
-  sameAs: [
-    site.author.github,
-    `https://twitter.com/${site.author.twitter.replace("@", "")}`,
-  ],
 };
 
 export default function Home() {

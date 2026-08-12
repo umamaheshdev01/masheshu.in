@@ -5,6 +5,8 @@ import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
+import { imageUrl } from "@/sanity/lib/image";
+
 gsap.registerPlugin(useGSAP);
 
 export default function PhotoGrid({ photos }) {
@@ -28,17 +30,25 @@ export default function PhotoGrid({ photos }) {
     <div className="container page-photos" ref={container}>
       {columns.map((column, colIndex) => (
         <div className="photos-col" key={colIndex}>
-          {column.map(({ photo, index }) => (
-            <div className="photo-frame" key={photo.src + index}>
-              <Image
-                src={photo.src}
-                alt={photo.alt || ""}
-                fill
-                sizes="(max-width: 900px) 100vw, 33vw"
-                priority={index < 3}
-              />
-            </div>
-          ))}
+          {column.map(({ photo, index }) => {
+            const src = imageUrl(photo.image, 1000);
+            if (!src) return null;
+            const lqip = photo.image?.asset?.metadata?.lqip;
+
+            return (
+              <div className="photo-frame" key={photo.id}>
+                <Image
+                  src={src}
+                  alt={photo.alt || ""}
+                  fill
+                  sizes="(max-width: 900px) 100vw, 33vw"
+                  placeholder={lqip ? "blur" : "empty"}
+                  blurDataURL={lqip}
+                  priority={index < 3}
+                />
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>

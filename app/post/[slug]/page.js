@@ -1,29 +1,27 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { MDXRemote } from "next-mdx-remote/rsc";
-import remarkGfm from "remark-gfm";
-import remarkUnwrapImages from "remark-unwrap-images";
-import rehypeSlug from "rehype-slug";
 import { FaLink } from "react-icons/fa";
 
-import { mdxComponents } from "@/components/mdx";
-import { getAllPosts, getPost, formatDate } from "@/lib/posts";
+import PortableBody from "@/components/PortableBody";
+import { getAllEntries, getPost, formatDate } from "@/lib/posts";
+import { imageUrl } from "@/sanity/lib/image";
 import { site, absoluteUrl } from "@/lib/site";
 
-// Every post is rendered to static HTML at build time. Drafts are built too
-// so you can open the real URL and check it — they just carry a noindex tag
-// and stay out of the work grid, sitemap and feed.
-export function generateStaticParams() {
-  return getAllPosts({ includeDrafts: true }).map((post) => ({ slug: post.slug }));
+// Posts and projects share this page — both are written in Studio and both
+// live at /post/<slug>.
+export async function generateStaticParams() {
+  const entries = await getAllEntries();
+  return entries.map((entry) => ({ slug: entry.slug }));
 }
 
-// A request for a slug that isn't in content/posts is a 404, not a render.
-export const dynamicParams = false;
+// Anything published after the last build still renders on first request and
+// is then cached, so new work in Studio doesn't need a redeploy.
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = await getPost(slug);
   if (!post) return {};
 
   return {
@@ -31,7 +29,6 @@ export async function generateMetadata({ params }) {
     description: post.excerpt || site.description,
     keywords: post.tags,
     alternates: { canonical: `/post/${post.slug}` },
-    robots: post.draft ? { index: false, follow: false } : undefined,
     openGraph: {
       type: "article",
       title: post.title,
@@ -51,20 +48,14 @@ export async function generateMetadata({ params }) {
   };
 }
 
-const mdxOptions = {
-  mdxOptions: {
-    remarkPlugins: [remarkGfm, remarkUnwrapImages],
-    rehypePlugins: [rehypeSlug],
-  },
-};
-
 export default async function PostPage({ params }) {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = await getPost(slug);
   if (!post) notFound();
 
-  // Neighbours for the prev/next links at the foot of the post.
-  const published = getAllPosts();
+  // Neighbours for the prev/next links at the foot of the post. Posts and
+  // projects sit in one chronological run, so a project can follow a post.
+  const published = await getAllEntries();
   const index = published.findIndex((p) => p.slug === post.slug);
   const newer = index > 0 ? published[index - 1] : null;
   const older = index >= 0 && index < published.length - 1 ? published[index + 1] : null;
@@ -79,7 +70,7 @@ export default async function PostPage({ params }) {
     author: { "@type": "Person", name: site.author.name, url: absoluteUrl("/") },
     publisher: { "@type": "Person", name: site.author.name },
     mainEntityOfPage: absoluteUrl(`/post/${post.slug}`),
-    image: absoluteUrl(post.cover || site.ogImage),
+    image: imageUrl(post.cover, 1200) || absoluteUrl(site.ogImage),
     keywords: post.tags.join(", "),
   };
 
@@ -112,20 +103,22 @@ export default async function PostPage({ params }) {
         ) : null}
       </div>
 
-      {post.cover ? (
+      {imageUrl(post.cover) ? (
         <div className="post-cover">
           <Image
-            src={post.cover}
+            src={imageUrl(post.cover, 1600)}
             alt={post.coverAlt}
             fill
             sizes="(max-width: 900px) 100vw, 50vw"
+            placeholder={post.cover.asset?.metadata?.lqip ? "blur" : "empty"}
+            blurDataURL={post.cover.asset?.metadata?.lqip}
             priority
           />
         </div>
       ) : null}
 
       <div className="post-content">
-        <MDXRemote source={post.content} components={mdxComponents} options={mdxOptions} />
+        <PortableBody value={post.body} />
       </div>
 
       {post.tags.length ? (

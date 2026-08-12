@@ -10,7 +10,7 @@ function ProjectRow({ project }) {
   const { ref: copyRef } = useScramble({ text: project.copy, speed: 1000 });
 
   return (
-    <Link href={project.url || "/work"}>
+    <Link href={`/post/${project.slug}`}>
       <div className="project-item">
         <div className="project-title">
           {/* The scramble hook writes into these nodes; the text is still in
@@ -33,8 +33,8 @@ export default function ProjectList({ projects }) {
   return (
     <div className="container page-projects">
       <h1 className="sr-only">Projects</h1>
-      {projects.map((project, index) => (
-        <ProjectRow key={project.title + index} project={project} />
+      {projects.map((project) => (
+        <ProjectRow key={project.slug} project={project} />
       ))}
     </div>
   );

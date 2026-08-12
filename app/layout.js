@@ -21,7 +21,7 @@ export const metadata = {
   metadataBase: new URL(site.url),
   title: {
     default: `${site.name} — ${site.tagline}`,
-    // Any page that sets a title gets " — Soren" appended automatically.
+    // Any page that sets a title gets " — Uma Mahesh" appended automatically.
     template: `%s — ${site.name}`,
   },
   description: site.description,
@@ -44,7 +44,6 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    creator: site.author.twitter,
     title: `${site.name} — ${site.tagline}`,
     description: site.description,
   },
@@ -63,7 +62,12 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${urbanist.variable} ${jetbrainsMono.variable}`}>
+    // Extensions (LanguageTool, Grammarly, …) mutate <html> before hydration.
+    <html
+      lang="en"
+      className={`${urbanist.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         <Dock />
         {children}

@@ -1,6 +1,7 @@
 import { getAllPosts } from "@/lib/posts";
 import { site, absoluteUrl } from "@/lib/site";
 
+// Rebuilt when the Sanity webhook invalidates the "content" tag.
 export const dynamic = "force-static";
 
 function escape(str = "") {
@@ -11,8 +12,8 @@ function escape(str = "") {
     .replace(/"/g, "&quot;");
 }
 
-export function GET() {
-  const posts = getAllPosts();
+export async function GET() {
+  const posts = await getAllPosts();
 
   const items = posts
     .map(

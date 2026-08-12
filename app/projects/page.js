@@ -1,18 +1,19 @@
 import ProjectList from "@/components/ProjectList";
-import projects from "@/content/projects.json";
+import { getAllProjects } from "@/lib/posts";
 
 export const metadata = {
   title: "Projects",
   description:
-    "Projects by Soren — web artistry, interactive media, cloud architecture and applied AI.",
+    "Projects by Uma Mahesh — coding, engineering and applied AI.",
   alternates: { canonical: "/projects" },
   openGraph: {
     title: "Projects",
-    description: "Projects by Soren, from 2022 to today.",
+    description: "Projects by Uma Mahesh.",
     url: "/projects",
   },
 };
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const projects = await getAllProjects();
   return <ProjectList projects={projects} />;
 }

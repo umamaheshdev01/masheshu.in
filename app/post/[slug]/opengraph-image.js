@@ -1,18 +1,19 @@
 import { ImageResponse } from "next/og";
 
-import { getAllPosts, getPost, formatDate } from "@/lib/posts";
+import { getAllEntries, getPost, formatDate } from "@/lib/posts";
 import { site } from "@/lib/site";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export function generateStaticParams() {
-  return getAllPosts({ includeDrafts: true }).map((post) => ({ slug: post.slug }));
+export async function generateStaticParams() {
+  const entries = await getAllEntries();
+  return entries.map((entry) => ({ slug: entry.slug }));
 }
 
 export default async function PostOpengraphImage({ params }) {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = await getPost(slug);
   const title = post?.title || site.name;
 
   return new ImageResponse(

@@ -15,24 +15,17 @@ import {
 
 import { site } from "@/lib/site";
 
+// An item with no `path` renders as an icon that doesn't go anywhere — the
+// social row is present but inert until there's somewhere to point it. Give
+// one a `path` (plus `external: true`) to switch it back on.
 const items = [
   { icon: FaHome, path: "/", label: "Home" },
-  { icon: FaPalette, path: "/work", label: "Work" },
   { icon: FaFolderOpen, path: "/projects", label: "Projects" },
+  { icon: FaPalette, path: "/work", label: "Work" },
   { icon: FaCamera, path: "/photos", label: "Photos" },
-  {
-    icon: FaTwitter,
-    path: `https://twitter.com/${site.author.twitter.replace("@", "")}`,
-    label: "Twitter",
-    external: true,
-  },
-  { icon: FaGithub, path: site.author.github, label: "GitHub", external: true },
-  {
-    icon: FaEnvelope,
-    path: `mailto:${site.author.email}`,
-    label: "Email",
-    external: true,
-  },
+  { icon: FaTwitter, label: "Twitter" },
+  { icon: FaGithub, label: "GitHub" },
+  { icon: FaEnvelope, label: site.author.email },
 ];
 
 function DockItem({ item, isHovered, isNeighbor, onMouseEnter, isActive }) {
@@ -47,6 +40,30 @@ function DockItem({ item, isHovered, isNeighbor, onMouseEnter, isActive }) {
     </span>
   );
 
+  // No destination: render the icon plainly. Not a link and not a button, so
+  // it stays out of the tab order and screen readers don't announce something
+  // activatable. `title` still surfaces the label on hover.
+  let content;
+  if (!item.path) {
+    content = (
+      <span className="dock-item-inert" title={item.label}>
+        {inner}
+      </span>
+    );
+  } else if (item.external) {
+    content = (
+      <a href={item.path} target="_blank" rel="noopener noreferrer">
+        {inner}
+      </a>
+    );
+  } else {
+    content = (
+      <Link href={item.path} aria-current={isActive ? "page" : undefined}>
+        {inner}
+      </Link>
+    );
+  }
+
   return (
     <div
       className="dock-item"
@@ -54,15 +71,7 @@ function DockItem({ item, isHovered, isNeighbor, onMouseEnter, isActive }) {
       style={{ transform: `scale(${scale})`, margin: `0 ${margin}` }}
       onMouseEnter={onMouseEnter}
     >
-      {item.external ? (
-        <a href={item.path} target="_blank" rel="noopener noreferrer">
-          {inner}
-        </a>
-      ) : (
-        <Link href={item.path} aria-current={isActive ? "page" : undefined}>
-          {inner}
-        </Link>
-      )}
+      {content}
     </div>
   );
 }
@@ -72,6 +81,10 @@ export default function Dock() {
   // every icon at rest until the pointer actually enters the dock.
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const pathname = usePathname();
+
+  // Studio is a full-screen app with its own navigation; the dock would sit
+  // on top of its toolbar.
+  if (pathname?.startsWith("/studio")) return null;
 
   return (
     <nav
